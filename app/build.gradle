@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.eadmobileapp'
+    namespace 'com.app.ead'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.eadmobileapp"
-        minSdk 26
+        applicationId "com.app.ead"
+        minSdk 29
         targetSdk 34
         versionCode 1
         versionName "1.0"
