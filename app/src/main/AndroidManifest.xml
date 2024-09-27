@@ -10,8 +10,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EADMobileApp"
+        android:theme="@style/Theme.EAD"
         tools:targetApi="31">
+        <activity
+            android:name="com.app.user.Register"
+            android:exported="false" />
+        <activity
+            android:name="com.app.user.Login"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

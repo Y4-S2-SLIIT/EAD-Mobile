@@ -1,4 +1,4 @@
-package com.example.eadmobileapp;
+package com.app.ead;
 
 import org.junit.Test;
 
