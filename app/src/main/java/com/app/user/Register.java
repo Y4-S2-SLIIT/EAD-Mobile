@@ -1,12 +1,17 @@
 package com.app.user;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.app.ead.R;
+import com.app.service.NetworkRequest;
+
+import org.json.JSONObject;
 
 public class Register extends AppCompatActivity {
 
@@ -17,6 +22,9 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        NetworkRequest networkRequest = new NetworkRequest();
+        String URL = getString(R.string.backend_api);
 
         // Initialize UI components
         firstName = findViewById(R.id.firstName);
@@ -41,15 +49,45 @@ public class Register extends AppCompatActivity {
                 String usernameInput = username.getText().toString();
                 String passwordInput = password.getText().toString();
 
-                // Implement your registration logic here
                 // For now, display a Toast message as feedback
                 if (!firstNameInput.isEmpty() && !lastNameInput.isEmpty() && !emailInput.isEmpty() &&
                         !phoneInput.isEmpty() && !addressInput.isEmpty() && !usernameInput.isEmpty() &&
                         !passwordInput.isEmpty()) {
-                    // Example: Display the inputs in a Toast message (just for testing)
-                    Toast.makeText(Register.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    try {
+                        // Prepare the JSON object with user data
+                        JSONObject postData = new JSONObject();
+                        postData.put("firstName", firstNameInput);
+                        postData.put("lastName", lastNameInput);
+                        postData.put("email", emailInput);
+                        postData.put("phone", phoneInput);
+                        postData.put("address", addressInput);
+                        postData.put("username", usernameInput);
+                        postData.put("password", passwordInput);
 
-                    // Here you would typically send the data to the server for registration
+                        // Create an instance of NetworkRequest class
+                        NetworkRequest networkRequest = new NetworkRequest();
+                        // Make a POST request
+                        String jsonResponse = networkRequest.sendPostRequest(URL + "customer/register", postData);
+
+                        if (jsonResponse != null) {
+                            // Parse the JSON response
+                            JSONObject responseJson = new JSONObject(jsonResponse);
+                            if((int)responseJson.get("status") == 200){
+                                Toast.makeText(Register.this, "Customer registered successfully.", Toast.LENGTH_SHORT).show();
+                                // Optionally, start a new activity
+                                Intent intent = new Intent(Register.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } else {
+                            // Handle the case where the response was null (error)
+                            Toast.makeText(Register.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(Register.this, "An error occurred.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(Register.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
                 }
