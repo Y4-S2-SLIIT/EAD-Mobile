@@ -1,7 +1,9 @@
 package com.app.user;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -9,12 +11,17 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.app.ead.MainActivity;
 import com.app.ead.R;
+import com.app.service.NetworkRequest;
+
+import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
 
-    private EditText email, password;
+    private EditText username, password;
     private Button loginButton, registerButton;
+    private SharedPreferences sharedPreferences; // Declare SharedPreferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,29 +29,69 @@ public class Login extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        // API URL for login
+        String URL = getString(R.string.backend_api) + "customer/login"; // Append login endpoint
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+
         // Initialize UI elements
-        email = findViewById(R.id.email);
+        username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
 
         // Set login button click listener
         loginButton.setOnClickListener(v -> {
-            String emailInput = email.getText().toString();
+            String usernameInput = username.getText().toString();
             String passwordInput = password.getText().toString();
 
-            if (emailInput.isEmpty() || passwordInput.isEmpty()) {
+            if (usernameInput.isEmpty() || passwordInput.isEmpty()) {
                 Toast.makeText(Login.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Handle login logic here
-                Toast.makeText(Login.this, "Login clicked", Toast.LENGTH_SHORT).show();
+                try {
+                    // Prepare JSON request body
+                    JSONObject postData = new JSONObject();
+                    postData.put("username", usernameInput);
+                    postData.put("password", passwordInput);
+
+                    // Call NetworkRequest to send POST request
+                    NetworkRequest networkRequest = new NetworkRequest();
+                    String response = networkRequest.sendPostRequest(URL, postData);
+
+                    if (response != null) {
+                        // Assuming the response is a JSON string
+                        JSONObject jsonResponse = new JSONObject(response);
+                        if (jsonResponse.has("token")) {
+                            String token = jsonResponse.getString("token");
+                            Log.i("TAG", token);
+
+                            // Save token in SharedPreferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("auth_token", token);
+                            editor.apply(); // Don't forget to commit the changes
+
+                            // Optionally, start a new activity
+                            Intent intent = new Intent(Login.this, Register.class); // Change to your main activity
+                            startActivity(intent);
+                            finish(); // Finish the Login activity
+                        } else {
+                            Toast.makeText(Login.this, "An error occurred.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(Login.this, "Login failed. No response from server.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(Login.this, "An error occurred.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         // Set register button click listener
         registerButton.setOnClickListener(v -> {
             // Redirect to the Register activity
-            Intent intent = new Intent(Login.this, com.app.user.Register.class);
+            Intent intent = new Intent(Login.this, Register.class);
             startActivity(intent);
         });
     }
