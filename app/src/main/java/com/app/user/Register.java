@@ -23,7 +23,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        NetworkRequest networkRequest = new NetworkRequest();
+        NetworkRequest networkRequest = new NetworkRequest(this);
         String URL = getString(R.string.backend_api);
 
         // Initialize UI components
@@ -64,8 +64,6 @@ public class Register extends AppCompatActivity {
                         postData.put("username", usernameInput);
                         postData.put("password", passwordInput);
 
-                        // Create an instance of NetworkRequest class
-                        NetworkRequest networkRequest = new NetworkRequest();
                         // Make a POST request
                         String jsonResponse = networkRequest.sendPostRequest(URL + "customer/register", postData);
 
