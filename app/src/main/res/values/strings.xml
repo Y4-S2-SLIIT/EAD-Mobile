@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">EADMobileApp</string>
+    <string name="app_name">EAD</string>
+    <string name="backend_api">http://10.0.2.2:5172/api/</string>
+    <string name="title_activity_main_bottom">MainBottomActivity</string>
+    <string name="title_browse">Browse</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_profile">Profile</string>
 </resources>
