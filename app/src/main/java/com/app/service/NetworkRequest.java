@@ -1,5 +1,8 @@
 package com.app.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,6 +11,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class NetworkRequest {
+    private Context context;
+    private String token = null;
+
+    public NetworkRequest (Context context){
+        this.context = context;
+        this.token = retrieveToken();
+    }
+
+    private String retrieveToken(){
+        // Get SharedPreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", context.MODE_PRIVATE);
+        // Retrieve the token
+        return sharedPreferences.getString("auth_token", null);
+    }
 
     // Method for sending GET request
     public String sendGetRequest(String requestUrl) {
@@ -16,6 +33,9 @@ public class NetworkRequest {
             URL url = new URL(requestUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
+            if(this.token != null){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + this.token);
+            }
 
             // Read the response
             int responseCode = urlConnection.getResponseCode();
@@ -51,6 +71,9 @@ public class NetworkRequest {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            if(this.token != null){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + this.token);
+            }
 
             // Send JSON data
             OutputStream os = urlConnection.getOutputStream();
@@ -92,6 +115,9 @@ public class NetworkRequest {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("PUT");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            if(this.token != null){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + this.token);
+            }
 
             // Send JSON data
             OutputStream os = urlConnection.getOutputStream();
@@ -131,6 +157,9 @@ public class NetworkRequest {
             URL url = new URL(requestUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("DELETE");
+            if(this.token != null){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + this.token);
+            }
 
             // Read the response
             int responseCode = urlConnection.getResponseCode();
