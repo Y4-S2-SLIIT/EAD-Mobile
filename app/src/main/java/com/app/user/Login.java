@@ -12,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.ead.MainActivity;
+import com.app.ead.MainBottomActivity;
 import com.app.ead.R;
 import com.app.service.NetworkRequest;
 
@@ -72,7 +73,7 @@ public class Login extends AppCompatActivity {
                             editor.apply(); // Don't forget to commit the changes
 
                             // Optionally, start a new activity
-                            Intent intent = new Intent(Login.this, Register.class); // Change to your main activity
+                            Intent intent = new Intent(Login.this, MainBottomActivity.class); // Change to your main activity
                             startActivity(intent);
                             finish(); // Finish the Login activity
                         } else {
