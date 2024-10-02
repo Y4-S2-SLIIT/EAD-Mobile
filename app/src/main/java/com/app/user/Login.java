@@ -30,6 +30,7 @@ public class Login extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        NetworkRequest networkRequest = new NetworkRequest(this);
         // API URL for login
         String URL = getString(R.string.backend_api) + "customer/login"; // Append login endpoint
 
@@ -56,8 +57,6 @@ public class Login extends AppCompatActivity {
                     postData.put("username", usernameInput);
                     postData.put("password", passwordInput);
 
-                    // Call NetworkRequest to send POST request
-                    NetworkRequest networkRequest = new NetworkRequest();
                     String response = networkRequest.sendPostRequest(URL, postData);
 
                     if (response != null) {
