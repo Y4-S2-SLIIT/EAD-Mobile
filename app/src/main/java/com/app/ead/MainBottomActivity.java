@@ -16,6 +16,7 @@ import com.app.ead.databinding.ActivityMainBottomBinding;
 public class MainBottomActivity extends AppCompatActivity {
 
     private ActivityMainBottomBinding binding;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +36,14 @@ public class MainBottomActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_browse, R.id.navigation_cart, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_bottom);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_bottom);
 
         // Set up ActionBar with NavController
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         // Set up BottomNavigationView with NavController
         NavigationUI.setupWithNavController(binding.navView, navController);
+
     }
 
     @Override
@@ -49,5 +51,9 @@ public class MainBottomActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_bottom);
         return NavigationUI.navigateUp(navController, new AppBarConfiguration.Builder(navController.getGraph()).build())
                 || super.onSupportNavigateUp();
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 }
