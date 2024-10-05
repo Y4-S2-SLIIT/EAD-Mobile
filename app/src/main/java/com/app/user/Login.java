@@ -65,9 +65,9 @@ public class Login extends AppCompatActivity {
 
                         if (jsonResponse.has("token")) {
                             String token = jsonResponse.getString("token");
+                            String cus_id = jsonResponse.getString("customerId");
                             boolean isVerified = jsonResponse.getBoolean("isVerified"); // Check verification status
                             boolean isDeactivated = jsonResponse.getBoolean("isDeactivated"); // Check deactivation status
-                            Log.i("TAG", token);
 
                             if (isDeactivated) {
                                 Toast.makeText(Login.this, "Your account is deactivated.", Toast.LENGTH_SHORT).show();
@@ -82,6 +82,7 @@ public class Login extends AppCompatActivity {
                             // Save token in SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("auth_token", token);
+                            editor.putString("cus_id", cus_id);
                             editor.apply(); // Don't forget to commit the changes
 
                             // Optionally, start a new activity
