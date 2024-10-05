@@ -64,11 +64,12 @@ public class Login extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         if (jsonResponse.has("token")) {
                             String token = jsonResponse.getString("token");
-                            Log.i("TAG", token);
+                            String cus_id = jsonResponse.getString("customerId");
 
                             // Save token in SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("auth_token", token);
+                            editor.putString("cus_id", cus_id);
                             editor.apply(); // Don't forget to commit the changes
 
                             // Optionally, start a new activity

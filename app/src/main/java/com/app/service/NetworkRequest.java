@@ -13,17 +13,23 @@ import java.net.URL;
 public class NetworkRequest {
     private Context context;
     private String token = null;
+    private String cusId = null;
 
     public NetworkRequest (Context context){
         this.context = context;
-        this.token = retrieveToken();
+        evaluateUser();
     }
 
-    private String retrieveToken(){
+    private void evaluateUser(){
         // Get SharedPreferences
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", context.MODE_PRIVATE);
         // Retrieve the token
-        return sharedPreferences.getString("auth_token", null);
+        this.token = sharedPreferences.getString("auth_token", null);
+        this.cusId = sharedPreferences.getString("cus_id", null);
+    }
+
+    public String getCusId(){
+        return this.cusId;
     }
 
     // Method for sending GET request
