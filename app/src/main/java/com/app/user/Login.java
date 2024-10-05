@@ -62,9 +62,22 @@ public class Login extends AppCompatActivity {
                     if (response != null) {
                         // Assuming the response is a JSON string
                         JSONObject jsonResponse = new JSONObject(response);
+
                         if (jsonResponse.has("token")) {
                             String token = jsonResponse.getString("token");
                             String cus_id = jsonResponse.getString("customerId");
+                            boolean isVerified = jsonResponse.getBoolean("isVerified"); // Check verification status
+                            boolean isDeactivated = jsonResponse.getBoolean("isDeactivated"); // Check deactivation status
+
+                            if (isDeactivated) {
+                                Toast.makeText(Login.this, "Your account is deactivated.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            if (!isVerified) {
+                                Toast.makeText(Login.this, "Your account is not verified.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                             // Save token in SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
