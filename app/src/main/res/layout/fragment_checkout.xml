@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"> <!-- Center items horizontally and vertically -->
+
+    <!-- Total Price TextView -->
+    <TextView
+        android:id="@+id/total_price_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Total Price: "
+        android:textSize="18sp" /> <!-- Center horizontally is handled by LinearLayout gravity -->
+
+    <!-- Confirmation Text -->
+    <TextView
+        android:id="@+id/confirmation_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" /> <!-- Center horizontally is handled by LinearLayout gravity -->
+
+    <!-- Place Order Button -->
+    <Button
+        android:id="@+id/place_order_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Place Order"
+        android:layout_marginTop="16dp" /> <!-- Optional margin to separate from above elements -->
+
+</LinearLayout>

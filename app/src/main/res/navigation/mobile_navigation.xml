@@ -15,11 +15,20 @@
         android:id="@+id/navigation_cart"
         android:name="com.app.ead.ui.cart.CartFragment"
         android:label="@string/title_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.app.ead.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.app.ead.ui.checkout.CheckoutFragment"
+        android:label="Checkout" />
 </navigation>

@@ -47,6 +47,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         notifyDataSetChanged();
     }
 
+    // New method to get current cart items
+    public List<CartItem> getCartItems() {
+        return new ArrayList<>(cartItems); // Return a copy to prevent external modification
+    }
+
     @NonNull
     @Override
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

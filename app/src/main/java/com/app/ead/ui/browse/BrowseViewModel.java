@@ -63,12 +63,13 @@ public class BrowseViewModel extends ViewModel {
             double price = jsonObject.getDouble("price");
             String image = jsonObject.getString("image");
             int stock = jsonObject.getInt("stock");
+            String vendorId = jsonObject.getString("vendorId");
 
             // Extract only the category name
             String categoryName = jsonObject.getJSONObject("category").getString("name");
 
             // Create a Product object and add it to the list
-            Product product = new Product(id, name, brand, description, categoryName, price, image, stock);
+            Product product = new Product(id, name, brand, description, categoryName, price, image, stock , vendorId);
             productList.add(product);
         }
 
