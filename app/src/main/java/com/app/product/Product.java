@@ -9,9 +9,10 @@ public class Product {
     private double price;
     private String imageUrl;
     private int stock;
+    private String vendorId;
 
     // Constructor
-    public Product(String id, String name, String brand, String description, String category, double price, String imageUrl, int stock) {
+    public Product(String id, String name, String brand, String description, String category, double price, String imageUrl, int stock, String vendorId) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -20,6 +21,7 @@ public class Product {
         this.price = price;
         this.imageUrl = imageUrl;
         this.stock = stock;
+        this.vendorId = vendorId;
     }
 
     // Getters
@@ -53,5 +55,13 @@ public class Product {
 
     public int getStock() {
         return stock;
+    }
+
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public String getVendorId() {
+        return vendorId;
     }
 }

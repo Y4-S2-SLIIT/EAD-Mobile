@@ -49,6 +49,28 @@ public class CartViewModel extends ViewModel {
         }
     }
 
+    public List<CartItem> returnCartItems(Context context) {
+        // Initialize networkRequest and URL
+        this.networkRequest = new NetworkRequest(context);
+        this.URL = context.getString(R.string.backend_api) + "cart/user/" + networkRequest.getCusId();
+
+        try {
+            String response = networkRequest.sendGetRequest(this.URL);
+            Log.d("TAG", response);
+            if (response != null) {
+                List<CartItem> cartItemList = parseCartItems(response);
+                return cartItemList;
+            } else {
+                return null;// Set empty list if response is null
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            return null; // Set empty list on error
+        }
+    }
+
+
+
     private List<CartItem> parseCartItems(String response) throws JSONException {
         List<CartItem> cartItemList = new ArrayList<>();
         JSONObject responseJSON = new JSONObject(response);
@@ -67,6 +89,7 @@ public class CartViewModel extends ViewModel {
             String name = productJson.getString("name");
             String brand = productJson.getString("brand");
             String description = productJson.getString("description");
+            String vendorId = productJson.getString("vendorId");
 
             // Extract only the category name
             String categoryName = productJson.getJSONObject("category").getString("name");
@@ -76,7 +99,7 @@ public class CartViewModel extends ViewModel {
             int stock = productJson.getInt("stock");
 
             // Create a Product object using the product details
-            Product productDetails = new Product(id, name, brand, description, categoryName, price, imageUrl, stock);
+            Product productDetails = new Product(id, name, brand, description, categoryName, price, imageUrl, stock, vendorId);
 
             // Create a CartItem object using product details and quantity
             CartItem cartItem = new CartItem(productId, quantity, productDetails);
