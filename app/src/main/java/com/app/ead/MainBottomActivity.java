@@ -56,4 +56,16 @@ public class MainBottomActivity extends AppCompatActivity {
     public NavController getNavController() {
         return navController;
     }
+    public void hideActionBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    public void showActionBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+        }
+    }
+
 }
