@@ -12,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.ead.MainActivity;
+import com.app.ead.MainBottomActivity;
 import com.app.ead.R;
 import com.app.service.NetworkRequest;
 
@@ -29,6 +30,7 @@ public class Login extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        NetworkRequest networkRequest = new NetworkRequest(this);
         // API URL for login
         String URL = getString(R.string.backend_api) + "customer/login"; // Append login endpoint
 
@@ -55,24 +57,36 @@ public class Login extends AppCompatActivity {
                     postData.put("username", usernameInput);
                     postData.put("password", passwordInput);
 
-                    // Call NetworkRequest to send POST request
-                    NetworkRequest networkRequest = new NetworkRequest();
                     String response = networkRequest.sendPostRequest(URL, postData);
 
                     if (response != null) {
                         // Assuming the response is a JSON string
                         JSONObject jsonResponse = new JSONObject(response);
+
                         if (jsonResponse.has("token")) {
                             String token = jsonResponse.getString("token");
-                            Log.i("TAG", token);
+                            String cus_id = jsonResponse.getString("customerId");
+                            boolean isVerified = jsonResponse.getBoolean("isVerified"); // Check verification status
+                            boolean isDeactivated = jsonResponse.getBoolean("isDeactivated"); // Check deactivation status
+
+                            if (isDeactivated) {
+                                Toast.makeText(Login.this, "Your account is deactivated.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            if (!isVerified) {
+                                Toast.makeText(Login.this, "Your account is not verified.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                             // Save token in SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("auth_token", token);
+                            editor.putString("cus_id", cus_id);
                             editor.apply(); // Don't forget to commit the changes
 
                             // Optionally, start a new activity
-                            Intent intent = new Intent(Login.this, Register.class); // Change to your main activity
+                            Intent intent = new Intent(Login.this, MainBottomActivity.class); // Change to your main activity
                             startActivity(intent);
                             finish(); // Finish the Login activity
                         } else {
